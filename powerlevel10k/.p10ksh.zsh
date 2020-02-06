@@ -365,7 +365,7 @@
 
   # Untracked files icon. It's really a question mark, your font isn't broken.
   # Change the value of this parameter to show a different icon.
-  typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON='\uf06a'   # exclamation circle - \uf06a - 
   typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON=${(g::)POWERLEVEL9K_VCS_UNTRACKED_ICON}
   typeset -g POWERLEVEL9K_SHOW_CHANGESET=true
   typeset -g POWERLEVEL9K_CHANGESET_HASH_LENGTH=6
@@ -1235,7 +1235,7 @@
       # local uptime=$(awk '{printf("%02d:%02d:%02d",int($1/3600),int($1%3600/60),int($1%60))}' /proc/uptime)
       local uptime=$(awk '{printf("%02d:%02d",int($1/3600),int($1%3600/60))}' /proc/uptime)
       local symbol=''
-      
+
       p10k segment -f 147 -i '%m' -t "$symbol $uptime"
   }
 
