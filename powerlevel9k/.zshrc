@@ -281,18 +281,54 @@ POWERLEVEL9K_CUSTOM_SIGNAL_BACKGROUND='clear'
 #     echo -n "%{$color%}$symbol " # \f1eb is wifi bars
 # }
 
+# zsh_signal()
+# {
+#     #Try to ping google DNS to see if you have internet
+#     local net=$(ping 8.8.8.8 -c 1| grep transmitted | awk '{print $6}' | grep 0)
+#     local color='%F{red}'
+#     local symbol='\uf011' # \uf011
+
+#     if [[ ! -z "$net" ]] ;
+#         then color='%F{040}' ; symbol='\uf1eb'
+#     fi
+
+#     echo -n "  %{$color%}$symbol   "     # wifi - \uf1eb - 
+# }
+
 zsh_signal()
 {
-    #Try to ping google DNS to see if you have internet
-    local net=$(ping 8.8.8.8 -c 1| grep transmitted | awk '{print $6}' | grep 0)
-    local color='%F{red}'
-    local symbol='\uf011' # \uf011
+    local signal=$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '{printf("%.0f", $3)}')   # Signal strength
+    local symbol=''
 
-    if [[ ! -z "$net" ]] ;
-        then color='%F{040}' ; symbol='\uf1eb'
+    if [[ -z "$signal" ]] ;
+      then local signal='' ; local color=160
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 90')" ] ;
+      then local color=046
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 80')" ] ;
+      then local color=118
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 70')" ] ;
+      then local color=112
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 60')" ] ;
+      then local color=154
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 50')" ] ;
+      then local color=190
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 40')" ] ;
+      then local color=226
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 30')" ] ;
+      then local color=220
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 20')" ] ;
+      then local color=214
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 10')" ] ;
+      then local color=208
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 0')" ] ;
+      then local color=202
     fi
 
-    echo -n "  %{$color%}$symbol   "     # wifi - \uf1eb - 
+    if [[ -z "$signal" ]] ;
+      then echo -n "  %{$color%}$signal $symbol"
+    else
+        echo -n "  %{$color%}$signal%% $symbol"
+    fi
 }
 
 # status
@@ -445,16 +481,40 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias cls="clear"
+alias create-react-app="/mnt/c/Windows/System32/cmd.exe /c 'create-react-app'"
 alias g++="/mnt/c/Windows/System32/cmd.exe /c 'g++'"
 alias gcc="/mnt/c/Windows/System32/cmd.exe /c 'gcc'"
+alias ghci="/mnt/c/Windows/System32/cmd.exe /c 'ghci'"
+alias gitfolio="/mnt/c/Windows/System32/cmd.exe /c 'gitfolio'"
+
+gitlog ()
+{
+  /mnt/c/Windows/System32/cmd.exe /c git log --pretty=format:"commit  : %h%nauthor  : %an (%ae)%ndate    : %ai (%ar)%nmessage :%n----------------------------------------------------------------------------------------------------%n%B----------------------------------------------------------------------------------------------------%n" --graph > gitlog.log
+}
+
+alias heroku="/mnt/c/Windows/System32/cmd.exe /c 'heroku'"
 alias java="/mnt/c/Windows/System32/cmd.exe /c 'java'"
 alias javac="/mnt/c/Windows/System32/cmd.exe /c 'javac'"
 alias mysql="/mnt/c/Windows/System32/cmd.exe /c 'mysql'"
+alias node="/mnt/c/Windows/System32/cmd.exe /c 'node'"
+alias npm="/mnt/c/Windows/System32/cmd.exe /c 'npm'"
+
+opengl ()
+{
+  /mnt/c/Windows/System32/cmd.exe /c g++ -m32 "$1" -L"C:\TDM-GCC-64\lib" -lopengl32 -lglu32 -lglew32 -lglut32 -lfreeglut -o "$2"
+}
+
 alias pgadmin="/mnt/c/Windows/System32/cmd.exe /c 'pgadmin4'"
 alias pgctl="/mnt/c/Windows/System32/cmd.exe /c 'pg_ctl -D "C:\\PostgreSQL\\12\\data"'"
 alias pip="/mnt/c/Windows/System32/cmd.exe /c 'pip'"
 alias psql="/mnt/c/Windows/System32/cmd.exe /c 'psql'"
 alias python="/mnt/c/Windows/System32/cmd.exe /c 'python'"
+alias vue="/mnt/c/Windows/System32/cmd.exe /c 'vue'"
+
+# alias sister1="ssh 13517020@167.205.35.150"
+# alias sister2="ssh 13517137@167.205.35.150"
+alias sister1="ssh m13517020@167.205.32.100"
+alias sister2="ssh m13517137@167.205.32.100"
 
 alias vs="/mnt/c/Windows/System32/cmd.exe /c 'code'"
 alias wgit="/mnt/c/Windows/System32/cmd.exe /c 'git'"

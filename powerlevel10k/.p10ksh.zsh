@@ -71,11 +71,13 @@
     background_jobs         # presence of background jobs
     load                    # CPU load
     swap                    # used swap
+    # ram                     # free RAM
     # coloredusedram        # colored used ram
     coloredfreeram          # colored free ram
     disk_usage              # disk usage
     # todo                  # todo items (https://github.com/todotxt/todo.txt-cli)
     # timewarrior           # timewarrior tracking status (https://timewarrior.net/)
+    windowswifi             # wifi speed for windows
     battery                 # internal battery
     # =========================[ Line #2 ]=========================
     newline                 # \n
@@ -594,14 +596,14 @@
   # Custom icon.
   # typeset -g POWERLEVEL9K_NIX_SHELL_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
-  ##################################[ disk_usgae: disk usage ]##################################
+  ##################################[ disk_usage: disk usage ]##################################
   # Colors for different levels of disk usage.
   typeset -g POWERLEVEL9K_DISK_USAGE_NORMAL_FOREGROUND=120
   typeset -g POWERLEVEL9K_DISK_USAGE_WARNING_FOREGROUND=222
   typeset -g POWERLEVEL9K_DISK_USAGE_CRITICAL_FOREGROUND=167
   # Thresholds for different levels of disk usage (percentage points).
-  typeset -g POWERLEVEL9K_DISK_USAGE_WARNING_LEVEL=85
-  typeset -g POWERLEVEL9K_DISK_USAGE_CRITICAL_LEVEL=95
+  typeset -g POWERLEVEL9K_DISK_USAGE_WARNING_LEVEL=95
+  typeset -g POWERLEVEL9K_DISK_USAGE_CRITICAL_LEVEL=98
   # If set to true, hide disk usage when below $POWERLEVEL9K_DISK_USAGE_WARNING_LEVEL percent.
   typeset -g POWERLEVEL9K_DISK_USAGE_ONLY_WARNING=false
   # Custom icon.
@@ -618,11 +620,11 @@
 
     # Free ram
     if [ "$(free | grep Mem | awk '$4 < $2 * 0.15')" ] ;
-      then color=167
+      then local color=167
     elif [ "$(free | grep Mem | awk '$4 < $2 * 0.45')" ] ;
-      then color=222
+      then local color=222
     elif [ "$(free | grep Mem | awk '$4 < $2')" ] ;
-      then color=120
+      then local color=120
     fi
 
     p10k segment -f "$color" -i "$symbol" -t "$free_ram"     # Free ram - G
@@ -642,11 +644,11 @@
 
     # Used ram
     if [ "$(free | grep Mem | awk '$3 > $2 * 0.85')" ] ;
-      then color=167
+      then local color=167
     elif [ "$(free | grep Mem | awk '$3 > $2 * 0.55')" ] ;
-      then color=222
+      then local color=222
     elif [ "$(free | grep Mem | awk '$3 > $2 * 0')" ] ;
-      then color=120
+      then local color=120
     fi
 
     p10k segment -f "$color" -i "$symbol" -t "$used_ram"     # Used ram - G
@@ -1184,7 +1186,7 @@
 
   #####################################[ wifi: wifi speed ]#####################################
   # WiFi color.
-  typeset -g POWERLEVEL9K_WIFI_FOREGROUND=68
+  # typeset -g POWERLEVEL9K_WIFI_FOREGROUND=68
   # Custom icon.
   # typeset -g POWERLEVEL9K_WIFI_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
@@ -1211,6 +1213,46 @@
   # All parameters except P9K_WIFI_BARS are extracted from the output of the following command:
   #
   #   /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I
+  function prompt_windowswifi()
+  {
+    local signal=$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '{printf("%.0f", $3)}')   # Signal strength
+    local symbol=''
+
+    if [[ -z "$signal" ]] ;
+      then local signal='' ; local color=160
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 90')" ] ;
+      then local color=046
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 80')" ] ;
+      then local color=118
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 70')" ] ;
+      then local color=112
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 60')" ] ;
+      then local color=154
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 50')" ] ;
+      then local color=190
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 40')" ] ;
+      then local color=226
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 30')" ] ;
+      then local color=220
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 20')" ] ;
+      then local color=214
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 10')" ] ;
+      then local color=208
+    elif [ "$(/mnt/c/Windows/System32/cmd.exe /c 'netsh wlan show interfaces' | grep Signal | awk '$3 > 0')" ] ;
+      then local color=202
+    fi
+
+    if [[ -z "$signal" ]] ;
+      then p10k segment -f "$color" -i "$symbol" -t "$signal"
+    else
+      p10k segment -f "$color" -i "$symbol" -t "$signal%%"
+    fi
+  }
+
+  function instant_prompt_windowswifi()
+  {
+    prompt_windowswifi
+  }
 
   ####################################[ time: current time ]####################################
   # Current time color.
