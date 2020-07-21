@@ -485,6 +485,7 @@ alias create-react-app="/mnt/c/Windows/System32/cmd.exe /c 'create-react-app'"
 alias g++="/mnt/c/Windows/System32/cmd.exe /c 'g++'"
 alias gcc="/mnt/c/Windows/System32/cmd.exe /c 'gcc'"
 alias ghci="/mnt/c/Windows/System32/cmd.exe /c 'ghci'"
+alias git="/mnt/c/Windows/System32/cmd.exe /c 'git'"
 alias gitfolio="/mnt/c/Windows/System32/cmd.exe /c 'gitfolio'"
 
 gitlog ()
@@ -497,6 +498,7 @@ alias java="/mnt/c/Windows/System32/cmd.exe /c 'java'"
 alias javac="/mnt/c/Windows/System32/cmd.exe /c 'javac'"
 alias mysql="/mnt/c/Windows/System32/cmd.exe /c 'mysql'"
 alias node="/mnt/c/Windows/System32/cmd.exe /c 'node'"
+alias nodemon="/mnt/c/Windows/System32/cmd.exe /c 'nodemon'"
 alias npm="/mnt/c/Windows/System32/cmd.exe /c 'npm'"
 
 opengl ()
@@ -509,12 +511,10 @@ alias pgctl="/mnt/c/Windows/System32/cmd.exe /c 'pg_ctl -D "C:\\PostgreSQL\\12\\
 alias pip="/mnt/c/Windows/System32/cmd.exe /c 'pip'"
 alias psql="/mnt/c/Windows/System32/cmd.exe /c 'psql'"
 alias python="/mnt/c/Windows/System32/cmd.exe /c 'python'"
+alias vs="/mnt/c/Windows/System32/cmd.exe /c 'code'"
 alias vue="/mnt/c/Windows/System32/cmd.exe /c 'vue'"
 
 # alias sister1="ssh 13517020@167.205.35.150"
 # alias sister2="ssh 13517137@167.205.35.150"
 alias sister1="ssh m13517020@167.205.32.100"
 alias sister2="ssh m13517137@167.205.32.100"
-
-alias vs="/mnt/c/Windows/System32/cmd.exe /c 'code'"
-alias wgit="/mnt/c/Windows/System32/cmd.exe /c 'git'"
